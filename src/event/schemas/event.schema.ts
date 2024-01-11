@@ -6,10 +6,10 @@ export type EventDocument = HydratedDocument<Event>;
 @Schema()
 export class Event {
     @Prop({ required: true })
-    id: number;
+    title: string;
 
     @Prop({ required: true })
-    name: string;
+    description: string;
 
     @Prop({ required: true })
     location: string;
