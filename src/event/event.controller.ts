@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -17,9 +17,10 @@ export class EventController {
   }
 
   @Get()
-  async findAll() {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async findAll(@Query('upcoming') upcoming: boolean) {
     try {
-      return await this.eventService.findAll();
+      return await this.eventService.findAll(upcoming);
     } catch (error) {
       throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }

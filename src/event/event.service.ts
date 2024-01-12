@@ -16,8 +16,10 @@ export class EventService {
     return createdEvent.save()
   }
 
-  async findAll(): Promise<Event[]> {
-    return this.eventModel.find().exec();
+  async findAll(isUpcomingEvent: boolean): Promise<Event[]> {
+    const now = new Date();
+    const upcomingQuery = isUpcomingEvent ? { $gt: now } : { $lt: now }
+    return this.eventModel.find({ endDate: upcomingQuery }).exec();
   }
 
   async findOne(id: number): Promise<Event | null> {
